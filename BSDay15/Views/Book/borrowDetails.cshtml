@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model Book
+
+<h2>@Model.Title</h2>
+<p>Author: @Model.Author</p>
+<p>Stock Amount: @Model.StockAmount</p>
+
+@if (Model.StockAmount > 0)
+{
+    <form method="post" action="@Url.Action("BorrowBook", "YourControllerName")">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="bookId" value="@Model.BookId" />
+        <button type="submit">Borrow Book</button>
+    </form>
+}
+else
+{
+    <p>Sorry, no books available for borrowing.</p>
+}
+
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"]?.ToString()))
+{
+    <p style="color: green;">@TempData["SuccessMessage"]</p>
+}
+
+@if (!string.IsNullOrEmpty(TempData["ErrorMessage"]?.ToString()))
+{
+    <p style="color: red;">@TempData["ErrorMessage"]</p>
+}
